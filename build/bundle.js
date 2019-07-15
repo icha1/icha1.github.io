@@ -56,6 +56,10 @@
 	
 	var _reactDom2 = _interopRequireDefault(_reactDom);
 	
+	var _ChatRoom = __webpack_require__(172);
+	
+	var _ChatRoom2 = _interopRequireDefault(_ChatRoom);
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -79,7 +83,7 @@
 				return _react2.default.createElement(
 					'div',
 					null,
-					'This is the React App!'
+					_react2.default.createElement(_ChatRoom2.default, null)
 				);
 			}
 		}]);
@@ -21154,6 +21158,100 @@
 	var ReactMount = __webpack_require__(164);
 	
 	module.exports = ReactMount.renderSubtreeIntoContainer;
+
+/***/ },
+/* 172 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _react = __webpack_require__(1);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	var Chatroom = function (_Component) {
+		_inherits(Chatroom, _Component);
+	
+		function Chatroom(props, context) {
+			_classCallCheck(this, Chatroom);
+	
+			var _this = _possibleConstructorReturn(this, (Chatroom.__proto__ || Object.getPrototypeOf(Chatroom)).call(this, props, context));
+	
+			_this.submit = _this.submit.bind(_this);
+			_this.updateUserName = _this.updateUserName.bind(_this);
+			_this.updateMessage = _this.updateMessage.bind(_this);
+			_this.state = {
+				username: '',
+				message: ''
+	
+			};
+			return _this;
+		}
+	
+		_createClass(Chatroom, [{
+			key: 'submit',
+			value: function submit(event) {
+				var pkg = {
+					username: this.state.username,
+					message: this.state.message
+				};
+				console.log('submit: ' + JSON.stringify(pkg));
+			}
+		}, {
+			key: 'updateUserName',
+			value: function updateUserName(event) {
+				console.log('updateUserName: ' + event.target.value);
+				this.setState({
+					username: event.target.value
+				});
+			}
+		}, {
+			key: 'updateMessage',
+			value: function updateMessage(event) {
+				console.log('updateMessage: ' + event.target.value);
+				this.setState({
+					message: event.target.value
+				});
+			}
+		}, {
+			key: 'render',
+			value: function render() {
+				return _react2.default.createElement(
+					'div',
+					null,
+					'This is the Chatroom!',
+					_react2.default.createElement('br', null),
+					_react2.default.createElement('input', { onChange: this.updateUserName, id: 'username', type: 'text', placeholder: 'Username' }),
+					_react2.default.createElement('br', null),
+					_react2.default.createElement('textarea', { onChange: this.updateMessage, id: 'message', placeholder: 'Message' }),
+					_react2.default.createElement('br', null),
+					_react2.default.createElement(
+						'button',
+						{ onClick: this.submit },
+						'Send Message'
+					)
+				);
+			}
+		}]);
+	
+		return Chatroom;
+	}(_react.Component);
+	
+	exports.default = Chatroom;
 
 /***/ }
 /******/ ]);
