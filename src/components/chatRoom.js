@@ -8,7 +8,8 @@ class Chatroom extends Component {
 		this.updateMessage = this.updateMessage.bind(this)
 		this.state = {
 			username: '',
-			message: ''
+			message: '',
+			thread: []
 
 		}
 	}
@@ -18,19 +19,22 @@ class Chatroom extends Component {
 			username: this.state.username, 
 			message: this.state.message
 		}
-		console.log('submit: '+JSON.stringify(pkg))
+	
+		var thread = [...this.state.thread, pkg]
+		//thread.push(pkg)
+		this.setState({
+			thread
+		})
 
 	}
 
 	updateUserName(event){
-		console.log('updateUserName: '+event.target.value)
 		this.setState({
 			username: event.target.value
 		})
 	}
 
 	updateMessage(event){
-		console.log('updateMessage: '+event.target.value)
 		this.setState({
 			message: event.target.value
 		})
@@ -38,6 +42,14 @@ class Chatroom extends Component {
 
 
 	render() {
+		var conversation = this.state.thread.map(function(msg,i){
+			return (
+				<li key={i}>
+				{msg.message}
+				</li>
+			)
+		})
+
 		return (
 			<div>
 			This is the Chatroom!<br /> 
@@ -45,6 +57,11 @@ class Chatroom extends Component {
 			<input onChange={this.updateUserName} id="username" type="text" placeholder="Username" /><br />
 			<textarea onChange={this.updateMessage} id="message" placeholder="Message"></textarea><br />
 			<button onClick={this.submit}>Send Message</button> 
+
+			<h2>Conversation</h2>
+			<ul>
+				{conversation}
+			</ul>
 			</div> 
 		)
 	}
