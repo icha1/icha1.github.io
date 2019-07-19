@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
 
-class Chatroom extends Component {
+class ChatRoom extends Component {
 	constructor(props, context){
 		super(props, context)
 		this.submit = this.submit.bind(this)
@@ -13,18 +13,50 @@ class Chatroom extends Component {
 
 		}
 	}
+	componentDidMount(){
+		var _this = this
+		firebase.database().ref('messages/').on('value', function(snapshot){
+			
+			var currentThread = snapshot.val()
+			console.log(JSON.stringify(currentThread))
+
+			var timestamps = Object.keys(currentThread).sort()
+
+			// var thread = []
+			// for (var i=0; i<timestamps.length; i++){
+			// 	var timestamp = timestamps[i]
+			// 	var pkg = currentThread[timestamp]
+			// 	thread.push(pkg)
+			// }
+
+			var thread = timestamps.map(timestamp =>
+				currentThread[timestamp]
+			)
+
+			_this.setState({
+				thread
+			})
+		})
+	}
 
 	submit(event){
 		var pkg = {
 			username: this.state.username, 
-			message: this.state.message
+			message: this.state.message,
+			id: Math.floor(Date.now() / 1000)
 		}
-	
-		var thread = [...this.state.thread, pkg]
-		//thread.push(pkg)
-		this.setState({
-			thread
-		})
+
+		console.log(JSON.stringify(pkg))
+		
+		//submit to Firebase
+		firebase.database().ref('messages/'+pkg.id).set(pkg)
+		// var thread = [...this.state.thread, pkg]
+		// //thread.push(pkg)
+		// this.setState({
+		// 	thread,
+		// 	username: '',
+		// 	message:'' 	
+		// })
 
 	}
 
@@ -54,8 +86,8 @@ class Chatroom extends Component {
 			<div>
 			This is the Chatroom!<br /> 
 
-			<input onChange={this.updateUserName} id="username" type="text" placeholder="Username" /><br />
-			<textarea onChange={this.updateMessage} id="message" placeholder="Message"></textarea><br />
+			<input onChange={this.updateUserName} id="username" type="text" placeholder="Username" value={this.state.username}/><br />
+			<textarea onChange={this.updateMessage} id="message" placeholder="Message" value={this.state.message}></textarea><br />
 			<button onClick={this.submit}>Send Message</button> 
 
 			<h2>Conversation</h2>
@@ -67,4 +99,4 @@ class Chatroom extends Component {
 	}
 }
 
-export default Chatroom
+export default ChatRoom

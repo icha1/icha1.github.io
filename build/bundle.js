@@ -21177,47 +21177,79 @@
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
-	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
-	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 	
 	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 	
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 	
-	var Chatroom = function (_Component) {
-		_inherits(Chatroom, _Component);
+	var ChatRoom = function (_Component) {
+		_inherits(ChatRoom, _Component);
 	
-		function Chatroom(props, context) {
-			_classCallCheck(this, Chatroom);
+		function ChatRoom(props, context) {
+			_classCallCheck(this, ChatRoom);
 	
-			var _this = _possibleConstructorReturn(this, (Chatroom.__proto__ || Object.getPrototypeOf(Chatroom)).call(this, props, context));
+			var _this2 = _possibleConstructorReturn(this, (ChatRoom.__proto__ || Object.getPrototypeOf(ChatRoom)).call(this, props, context));
 	
-			_this.submit = _this.submit.bind(_this);
-			_this.updateUserName = _this.updateUserName.bind(_this);
-			_this.updateMessage = _this.updateMessage.bind(_this);
-			_this.state = {
+			_this2.submit = _this2.submit.bind(_this2);
+			_this2.updateUserName = _this2.updateUserName.bind(_this2);
+			_this2.updateMessage = _this2.updateMessage.bind(_this2);
+			_this2.state = {
 				username: '',
 				message: '',
 				thread: []
 	
 			};
-			return _this;
+			return _this2;
 		}
 	
-		_createClass(Chatroom, [{
+		_createClass(ChatRoom, [{
+			key: 'componentDidMount',
+			value: function componentDidMount() {
+				var _this = this;
+				firebase.database().ref('messages/').on('value', function (snapshot) {
+	
+					var currentThread = snapshot.val();
+					console.log(JSON.stringify(currentThread));
+	
+					var timestamps = Object.keys(currentThread).sort();
+	
+					// var thread = []
+					// for (var i=0; i<timestamps.length; i++){
+					// 	var timestamp = timestamps[i]
+					// 	var pkg = currentThread[timestamp]
+					// 	thread.push(pkg)
+					// }
+	
+					var thread = timestamps.map(function (timestamp) {
+						return currentThread[timestamp];
+					});
+	
+					_this.setState({
+						thread: thread
+					});
+				});
+			}
+		}, {
 			key: 'submit',
 			value: function submit(event) {
 				var pkg = {
 					username: this.state.username,
-					message: this.state.message
+					message: this.state.message,
+					id: Math.floor(Date.now() / 1000)
 				};
 	
-				var thread = [].concat(_toConsumableArray(this.state.thread), [pkg]);
-				//thread.push(pkg)
-				this.setState({
-					thread: thread
-				});
+				console.log(JSON.stringify(pkg));
+	
+				//submit to Firebase
+				firebase.database().ref('messages/' + pkg.id).set(pkg);
+				// var thread = [...this.state.thread, pkg]
+				// //thread.push(pkg)
+				// this.setState({
+				// 	thread,
+				// 	username: '',
+				// 	message:'' 	
+				// })
 			}
 		}, {
 			key: 'updateUserName',
@@ -21249,9 +21281,9 @@
 					null,
 					'This is the Chatroom!',
 					_react2.default.createElement('br', null),
-					_react2.default.createElement('input', { onChange: this.updateUserName, id: 'username', type: 'text', placeholder: 'Username' }),
+					_react2.default.createElement('input', { onChange: this.updateUserName, id: 'username', type: 'text', placeholder: 'Username', value: this.state.username }),
 					_react2.default.createElement('br', null),
-					_react2.default.createElement('textarea', { onChange: this.updateMessage, id: 'message', placeholder: 'Message' }),
+					_react2.default.createElement('textarea', { onChange: this.updateMessage, id: 'message', placeholder: 'Message', value: this.state.message }),
 					_react2.default.createElement('br', null),
 					_react2.default.createElement(
 						'button',
@@ -21272,10 +21304,10 @@
 			}
 		}]);
 	
-		return Chatroom;
+		return ChatRoom;
 	}(_react.Component);
 	
-	exports.default = Chatroom;
+	exports.default = ChatRoom;
 
 /***/ }
 /******/ ]);

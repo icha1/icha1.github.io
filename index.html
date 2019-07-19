@@ -5,7 +5,26 @@
 </head>
 <body style="background: #f9f9f9">
 	<div id='app'></div>
+<!-- The core Firebase JS SDK is always required and must be listed first -->
+<script src="https://www.gstatic.com/firebasejs/3.2.0/firebase.js"></script>
 
+<!-- TODO: Add SDKs for Firebase products that you want to use
+     https://firebase.google.com/docs/web/setup#config-web-app -->
+
+<script>
+  // Your web app's Firebase configuration
+  var firebaseConfig = {
+    apiKey: "AIzaSyBeckE_M4Pw0bew1E717fwVTeCfmPMvCQY",
+    authDomain: "reactfirebase-30639.firebaseapp.com",
+    databaseURL: "https://reactfirebase-30639.firebaseio.com",
+    projectId: "reactfirebase-30639",
+    storageBucket: "reactfirebase-30639.appspot.com",
+    messagingSenderId: "546726316856",
+    appId: "1:546726316856:web:91867195a7ea3c94"
+  };
+  // Initialize Firebase
+  firebase.initializeApp(firebaseConfig);
+</script>
 	<script type="text/javascript" src="build/bundle.js"></script> 
 </body>
 </html>
