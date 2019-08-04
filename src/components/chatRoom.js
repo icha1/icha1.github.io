@@ -77,7 +77,7 @@ class ChatRoom extends Component {
 		var conversation = this.state.thread.map(function(msg,i){
 			return (
 				<li key={i}>
-				{msg.message}
+				{msg.username} : {msg.message}
 				</li>
 			)
 		})
